@@ -10,16 +10,24 @@ export const userReducer = createSlice({
   initialState, //initial value of all reducers
   reducers: {
     //all actions
-    addUser: (state)=> {
-      state.userList = [{
-        name: "Akash",
-        phone: "987654321",
-        email: "akash@gmail.com"
-      }]
+    setUsers: (state, data) => {
+      state.userList = data.payload;
     }
   }
 })
 
-export const { addUser } = userReducer.actions;
+export const { addUser, setUsers } = userReducer.actions;
+
+export const getUsers = (payload) => (dispatch, getState) => {
+  try {
+    fetch("https://reqres.in/api/users?page=" + getState().counter.value)
+      .then((res) => res.json())
+      .then((resJson) => {
+        dispatch(setUsers(resJson.data));
+      })
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 export default userReducer.reducer;

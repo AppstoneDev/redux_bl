@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "./userSlice";
+import { addUser, getUsers, getUsers2 } from "./userSlice";
 
 export default function Users() {
   const count = useSelector((store) => store.counter);
@@ -7,15 +8,19 @@ export default function Users() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getUsers(10))
+  }, [count.value]);
+
   return (
     <div>
-      hello from users component
-      {count.value}
-      <button
-        onClick={() => {
-          dispatch(addUser());
-        }}
-      >
+      {users.userList.map((user, index) =>
+        <div key={index}>
+          {user.first_name} {user.last_name}
+        </div>
+      )}
+
+      <button>
         add user
       </button>
     </div>
